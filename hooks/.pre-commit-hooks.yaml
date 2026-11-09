@@ -1,0 +1,10 @@
+# Hook definition consumed by the pre-commit framework.
+# Scans only the lines staged for the current commit. A non-zero exit blocks the commit.
+- id: secretsentinel
+  name: SecretSentinel
+  description: Block commits that add hard-coded secrets.
+  entry: secretsentinel scan --staged
+  language: python
+  types: [text]
+  pass_filenames: false
+  always_run: false

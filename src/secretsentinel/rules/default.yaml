@@ -1,0 +1,57 @@
+# Default detection rules for SecretSentinel.
+#
+# Each rule has:
+#   id           unique identifier
+#   description  human-readable summary
+#   regex        Python regex; if it has a capture group, group 1 is the candidate secret
+#   severity     low | medium | high | critical
+#   cwe          weakness identifier (default CWE-798: hard-coded credentials)
+#   min_entropy  minimum Shannon entropy (bits/char) of the candidate; 0 disables the check
+rules:
+  - id: aws-access-key-id
+    description: AWS access key ID
+    regex: '\b((?:AKIA|ASIA)[0-9A-Z]{16})\b'
+    severity: critical
+    min_entropy: 3.0
+
+  - id: github-token
+    description: GitHub personal, OAuth or app token
+    regex: '\b((?:gh[pousr]_[A-Za-z0-9]{36,255}))\b'
+    severity: critical
+    min_entropy: 3.0
+
+  - id: google-api-key
+    description: Google API key
+    regex: '\b(AIza[0-9A-Za-z_\-]{35})\b'
+    severity: high
+    min_entropy: 3.0
+
+  - id: slack-token
+    description: Slack token
+    regex: '\b(xox[baprs]-[0-9A-Za-z\-]{10,})\b'
+    severity: high
+    min_entropy: 3.0
+
+  - id: stripe-live-key
+    description: Stripe live secret key
+    regex: '\b(sk_live_[0-9A-Za-z]{24,})\b'
+    severity: critical
+    min_entropy: 3.0
+
+  - id: private-key-block
+    description: PEM private key block
+    regex: '(-----BEGIN (?:RSA |EC |DSA |OPENSSH |PGP |ENCRYPTED )?PRIVATE KEY(?: BLOCK)?-----)'
+    severity: critical
+    min_entropy: 0.0
+
+  - id: generic-password-assignment
+    description: Password assigned to a quoted literal
+    regex: '(?i)\b(?:password|passwd|pwd)\s*[:=]\s*["'']([^"''\s]{8,})["'']'
+    severity: medium
+    min_entropy: 3.0
+
+  - id: generic-api-key-assignment
+    description: API key, secret or token assigned to a quoted literal
+    regex: '(?i)\b(?:api[_-]?key|secret[_-]?key|access[_-]?token|auth[_-]?token)\s*[:=]\s*["'']([A-Za-z0-9_\-\.]{16,})["'']'
+    severity: high
+    min_entropy: 3.5
