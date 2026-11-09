@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "secretsentinel"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "Detect hard-coded secrets in working trees and git history."
 readme = "README.md"
 requires-python = ">=3.10"
